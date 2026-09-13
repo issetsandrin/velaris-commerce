@@ -1,0 +1,161 @@
+.root {
+  position: relative;
+  width: min(100%, 30rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  min-height: 16rem;
+}
+
+.slide {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  pointer-events: none;
+}
+
+.slide[data-active] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.glyph {
+  color: var(--brown);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.text {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 34rem;
+}
+
+.quote {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.author {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--brown);
+}
+
+.author span {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.perks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.perks li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.perkIcon {
+  color: var(--brown);
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: rgba(74, 56, 24, 0.28);
+  transition: width 220ms var(--ease-out), background-color 220ms var(--ease-out);
+}
+
+.dot[aria-selected="true"] {
+  width: 1.6rem;
+  background: var(--brown);
+}
+
+@media (max-width: 900px) {
+  .root {
+    gap: 0.9rem;
+  }
+
+  .stage {
+    min-height: 5.5rem;
+  }
+
+  .slide {
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.4rem;
+  }
+
+  .glyph {
+    display: none;
+  }
+
+  .title,
+  .quote {
+    font-size: 1.1rem;
+  }
+
+  .text,
+  .perks {
+    font-size: 0.9rem;
+  }
+
+  .perks {
+    gap: 0.35rem;
+  }
+
+  .dots {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    transition: none;
+  }
+}

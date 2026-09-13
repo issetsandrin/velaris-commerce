@@ -1,0 +1,501 @@
+.page {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.head {
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 3.25rem);
+  font-weight: 600;
+}
+
+/* Duas colunas: filtros à esquerda, catálogo à direita */
+.layout {
+  display: grid;
+  grid-template-columns: 17.5rem minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+
+.sidebar {
+  position: sticky;
+  top: calc(var(--header-h) + 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-right: clamp(0.5rem, 1.5vw, 1.5rem);
+  border-right: 1px solid var(--line);
+}
+
+/* Mesmo desenho do filtro de Meus pedidos: traço fino, ícone dentro, fundo do bloco */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.55rem;
+  height: 2.2rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: transparent;
+  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+.search:hover {
+  border-color: var(--line-strong);
+}
+
+.search:focus-within {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(210, 182, 115, 0.35);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0;
+}
+
+.search input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.5;
+}
+
+/* O X nativo do type="search" some: o botão ao lado faz esse papel */
+.search input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.search button {
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+}
+
+.search button:hover {
+  color: var(--ink);
+}
+
+.search :global(.icon) {
+  flex-shrink: 0;
+}
+
+.group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bronze);
+  margin-bottom: 0.1rem;
+}
+
+.options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  text-align: left;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.option:hover:not(:disabled) {
+  background: var(--wax);
+  color: var(--ink);
+}
+
+.option:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* O ponto à esquerda marca a opção em uso */
+.mark {
+  width: 0.6rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+.option[aria-pressed="true"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.option[aria-pressed="true"] .mark {
+  background: var(--brown);
+  box-shadow: inset 0 0 0 1px var(--brown);
+}
+
+.optionName {
+  flex: 1;
+}
+
+.optionCount {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Faixa de preço: dois controles sobrepostos na mesma trilha.
+   --bolinha é o diâmetro do pegador; a trilha e o trecho cheio recuam metade
+   disso de cada lado para casar com o centro das bolinhas nas pontas. */
+.range {
+  padding-block: 0.1rem 0.25rem;
+  /* --bolinha é o círculo que aparece; --pegador é a área que recebe o clique,
+     bem maior, feita com borda transparente. */
+  --bolinha: 0.9rem;
+  --pegador: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.rangeValues {
+  font-size: 0.95rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.rangeValues span {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  padding-inline: 0.15rem;
+}
+
+.rangeTrack {
+  position: relative;
+  height: var(--pegador);
+  display: grid;
+  align-items: center;
+  cursor: pointer;
+}
+
+.rangeTrack::before {
+  content: "";
+  position: absolute;
+  inset-inline: calc(var(--bolinha) / 2);
+  height: 2px;
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+
+.rangeFill {
+  position: absolute;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--brown);
+  left: calc(var(--bolinha) / 2 + var(--inicio) * (100% - var(--bolinha)));
+  right: calc(var(--bolinha) / 2 + (1 - var(--fim)) * (100% - var(--bolinha)));
+}
+
+.rangeTrack input {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: var(--pegador);
+  margin: 0;
+  background: none;
+  appearance: none;
+  /* A trilha inteira não recebe clique: só os pegadores, senão o de cima
+     cobriria o outro. Clicar na trilha é tratado no componente. */
+  pointer-events: none;
+}
+
+/* A borda transparente aumenta a área de clique sem engordar o círculo:
+   o fundo é pintado só no miolo, por causa do background-clip. */
+.rangeTrack input::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--pegador);
+  height: var(--pegador);
+  border: calc((var(--pegador) - var(--bolinha)) / 2) solid transparent;
+  border-radius: 999px;
+  background: var(--brown);
+  background-clip: content-box;
+  cursor: grab;
+  pointer-events: auto;
+  transition: transform 140ms var(--ease-out);
+}
+
+.rangeTrack input::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--pegador);
+  height: var(--pegador);
+  border: calc((var(--pegador) - var(--bolinha)) / 2) solid transparent;
+  border-radius: 999px;
+  background: var(--brown);
+  background-clip: content-box;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.rangeTrack input::-webkit-slider-thumb:active {
+  transform: scale(1.12);
+  cursor: grabbing;
+}
+
+.rangeTrack input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* Mesmo desenho das linhas de opção, marca redonda inclusive */
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.check:hover {
+  background: var(--wax);
+  color: var(--ink);
+}
+
+.check:has(input:checked) {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.check:has(input:focus-visible) {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.check input {
+  width: 0.6rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  margin: 0;
+  appearance: none;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+.check input:checked {
+  background: var(--brown);
+  box-shadow: inset 0 0 0 1px var(--brown);
+}
+
+.clear {
+  align-self: flex-start;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.results {
+  min-width: 0;
+}
+
+/* Contagem à esquerda, alternador de visualização à direita, na mesma linha */
+.countRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block: 1.5rem 1.75rem;
+}
+
+.viewToggle {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.viewToggle button {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  color: var(--ink-soft);
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.viewToggle button + button {
+  border-left: 1px solid var(--line);
+}
+
+.viewToggle button:hover {
+  background: var(--wax);
+  color: var(--ink);
+}
+
+.viewToggle button[aria-pressed="true"] {
+  background: var(--brown);
+  color: var(--wax);
+}
+
+.viewToggle :global(.icon) {
+  color: currentColor;
+}
+
+.count {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.grid[data-view="linha"] {
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 2.5vw, 2rem);
+}
+
+/* Cada card entra ao ser inserido na grade, o que também cobre a troca de filtro:
+   só os que aparecem agora animam, os que já estavam na tela ficam parados. */
+.grid > * {
+  animation: card-in 420ms var(--ease-out) both;
+}
+
+.grid > *:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.grid > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.grid > *:nth-child(n + 4) {
+  animation-delay: 170ms;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Paginação: só entra quando a coleção passa de uma página.
+   Sem bordas, cantos redondos e a página atual marcada por um fundo suave. */
+.paginacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 2.5rem;
+}
+
+.paginacao button {
+  display: grid;
+  place-items: center;
+  min-width: 2.1rem;
+  height: 2.1rem;
+  padding-inline: 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.paginacao button:hover:not(:disabled) {
+  background: var(--wax);
+  color: var(--ink);
+}
+
+.paginacao button[aria-current="page"] {
+  background: rgba(210, 182, 115, 0.35);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.paginacao button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.paginacao :global(.icon) {
+  color: currentColor;
+}
+
+.emptyState {
+  padding: 3rem 0;
+  animation: card-in 420ms var(--ease-out) both;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  color: var(--ink-soft);
+}
+
+.emptyState p {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Numa coluna só, os filtros voltam para cima do catálogo */
+  .sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+    padding: 0 0 1.5rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .group {
+    min-width: 12rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

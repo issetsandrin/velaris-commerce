@@ -1,0 +1,25 @@
+.box {
+  border: 1px solid rgba(154, 121, 53, 0.5);
+  background: rgba(210, 182, 115, 0.18);
+  border-radius: 4px;
+  padding: 1.5rem 1.75rem;
+  max-width: 56ch;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+
+.text {
+  margin-top: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.text code {
+  font-size: 0.85em;
+  background: var(--wax);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+}

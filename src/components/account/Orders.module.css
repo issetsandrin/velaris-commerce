@@ -1,0 +1,345 @@
+/* Um invólucro só: o AccountShell separa os filhos dele em 2rem, e aqui dentro
+   o espaçamento é mais curto. */
+.wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Filtro da lista: número do pedido e período */
+/* Ações do pedido: detalhe e, quando ainda não pago, o caminho do pagamento */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.15rem;
+  border-top: 1px solid var(--line);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.back :global(.icon) {
+  color: currentColor;
+}
+
+.detail {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.pay {
+  min-height: 2.4rem;
+  padding-inline: 1.1rem;
+  font-size: 0.88rem;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem 0.85rem;
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+/* Campos de traço fino: o filtro é apoio, não o assunto da tela */
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.55rem;
+  height: 2.2rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: transparent;
+  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+.control:hover {
+  border-color: var(--line-strong);
+}
+
+.control:focus-within {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(210, 182, 115, 0.35);
+}
+
+.control :global(.icon) {
+  flex-shrink: 0;
+  color: var(--bronze);
+}
+
+.filterField input {
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0;
+  min-width: 0;
+}
+
+.filterField input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.5;
+}
+
+.situacao {
+  width: 9.5rem;
+}
+
+.filterField input[type="search"] {
+  width: 11rem;
+}
+
+.filterField input[type="search"]::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.filterField input[type="date"] {
+  width: 6.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Data ainda em branco fica no tom de apoio, como um placeholder */
+.filterField input[type="date"][data-empty] {
+  color: var(--ink-soft);
+  opacity: 0.5;
+}
+
+/* O botão nativo do calendário some: quem abre é o campo inteiro */
+.filterField input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.filterField .control:has(input[type="date"]) {
+  position: relative;
+}
+
+.clearFilters {
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.count {
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order {
+  background: var(--wax);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem clamp(1.25rem, 3vw, 1.75rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.number {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.muted {
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(210, 182, 115, 0.3);
+  color: var(--brown);
+  font-weight: 700;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.status .icon {
+  color: currentColor;
+}
+
+.status[data-status="cancelado"] {
+  background: rgba(122, 93, 41, 0.12);
+  color: var(--ink-soft);
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.thumb {
+  display: block;
+  background: var(--paper);
+  border-radius: 4px;
+  padding: 0.3rem;
+  aspect-ratio: 1;
+}
+
+.itemBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemName {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.itemName:hover {
+  color: var(--amber);
+}
+
+.foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.25rem clamp(1.25rem, 3vw, 1.75rem) 1.5rem;
+  border-top: 1px solid var(--line);
+  background: rgba(245, 240, 232, 0.6);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.meta p {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.meta .icon {
+  margin-top: 0.25rem;
+}
+
+.totals {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.totals dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.total {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.total dt {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.total dd {
+  font-size: 1.35rem;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 2rem clamp(1.25rem, 3vw, 2rem);
+  background: var(--wax);
+  border-radius: 6px;
+}
+
+.emptyTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.error {
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(154, 121, 53, 0.5);
+  background: rgba(210, 182, 115, 0.18);
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 720px) {
+  .foot {
+    grid-template-columns: 1fr;
+  }
+}

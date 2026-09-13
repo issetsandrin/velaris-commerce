@@ -1,0 +1,46 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.field input {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--wax);
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  padding: 0.75rem 0.9rem;
+  transition: border-color 160ms var(--ease-out);
+}
+
+/* Placeholder é dica, não conteúdo: fica no tom de apoio, bem apagado */
+.field input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.5;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(210, 182, 115, 0.35);
+}
+
+/* Campo recusado: borda e recado em vermelho, aqui e em qualquer formulário
+   que use este componente. */
+.field input[aria-invalid="true"] {
+  border-color: var(--danger-line);
+}
+
+.field input[aria-invalid="true"]:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(163, 53, 42, 0.18);
+}
+
+.error {
+  font-size: 0.9rem;
+  color: var(--danger);
+}

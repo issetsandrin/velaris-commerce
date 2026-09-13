@@ -1,0 +1,199 @@
+/* Cartão de crédito desenhado: preenche enquanto a pessoa digita, troca de cor
+   conforme a bandeira e gira para mostrar o código de segurança. */
+.palco {
+  --frente: linear-gradient(135deg, #7a5d29 0%, #4a3818 100%);
+  --marca-a: rgba(255, 255, 255, 0.85);
+  --marca-b: rgba(255, 255, 255, 0.55);
+  perspective: 1200px;
+  width: 100%;
+  margin-bottom: 0.35rem;
+}
+
+.palco[data-bandeira="visa"] {
+  --frente: linear-gradient(135deg, #2a4d8f 0%, #14284d 100%);
+  --marca-a: #f7f3e8;
+  --marca-b: #e0b84f;
+}
+
+.palco[data-bandeira="mastercard"] {
+  --frente: linear-gradient(135deg, #3b3a38 0%, #17161a 100%);
+  --marca-a: #e8582c;
+  --marca-b: #f2a417;
+}
+
+.palco[data-bandeira="amex"] {
+  --frente: linear-gradient(135deg, #1e7f96 0%, #0d4453 100%);
+  --marca-a: rgba(255, 255, 255, 0.9);
+  --marca-b: rgba(255, 255, 255, 0.6);
+}
+
+.palco[data-bandeira="elo"] {
+  --frente: linear-gradient(135deg, #2b2b2b 0%, #000 100%);
+  --marca-a: #efc417;
+  --marca-b: #d9483b;
+}
+
+.palco[data-bandeira="diners"] {
+  --frente: linear-gradient(135deg, #4a688f 0%, #24354d 100%);
+  --marca-a: #f4f4f4;
+  --marca-b: #9fb4d0;
+}
+
+.cartao {
+  position: relative;
+  aspect-ratio: 1.586;
+  transform-style: preserve-3d;
+  transition: transform 620ms var(--ease-out);
+}
+
+.palco[data-virado] .cartao {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+  background: var(--frente);
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(74, 56, 24, 0.18);
+  backface-visibility: hidden;
+  transition: background 400ms var(--ease-out);
+  display: flex;
+  flex-direction: column;
+}
+
+.frente {
+  justify-content: space-between;
+}
+
+.verso {
+  transform: rotateY(180deg);
+  padding: 1.25rem 0;
+  justify-content: flex-start;
+  gap: 0.9rem;
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Chip, desenhado com gradiente e linhas */
+.chip {
+  width: 2.6rem;
+  height: 2rem;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #e8cf92 0%, #b99a58 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.chip::before,
+.chip::after {
+  content: "";
+  position: absolute;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.chip::before {
+  inset: 33% 0 auto 0;
+  height: 1px;
+}
+
+.chip::after {
+  inset: 0 auto 0 45%;
+  width: 1px;
+}
+
+/* Logotipo oficial da bandeira, num selo do tamanho de um chip */
+.bandeira {
+  width: 3.1rem;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  transition: opacity 260ms var(--ease-out);
+}
+
+.numero {
+  display: flex;
+  gap: 0.9rem;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: clamp(1rem, 4.4vw, 1.25rem);
+  letter-spacing: 0.02em;
+}
+
+.rodape {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rotulo {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+/* ---- verso ---- */
+.tarja {
+  display: block;
+  height: 2.75rem;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.assinatura {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 2.1rem;
+  margin-inline: 1.4rem;
+  padding-inline: 0.6rem;
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.92) 6px,
+    rgba(255, 255, 255, 0.78) 6px,
+    rgba(255, 255, 255, 0.78) 12px
+  );
+}
+
+.cvv {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  color: #1d1a16;
+}
+
+.versoNota {
+  margin-inline: 1.4rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cartao {
+    transition: none;
+  }
+}

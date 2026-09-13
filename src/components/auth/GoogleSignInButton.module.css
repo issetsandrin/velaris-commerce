@@ -1,0 +1,53 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wrap[data-disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.google {
+  display: flex;
+  justify-content: center;
+  min-height: 0;
+}
+
+.google:empty {
+  display: none;
+}
+
+.placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--wax);
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.placeholder:disabled {
+  color: var(--ink-soft);
+  cursor: not-allowed;
+}
+
+.note {
+  font-size: 1rem;
+  color: var(--bronze);
+  line-height: 1.5;
+}
+
+.note code {
+  font-size: 0.9em;
+  background: var(--wax);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+}

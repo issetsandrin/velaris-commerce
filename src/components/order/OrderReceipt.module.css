@@ -1,0 +1,178 @@
+/* Comprovante do pedido, compartilhado pelo checkout e pela tela de pagamento */
+
+.done {
+  padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 10vw, 8rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.doneTitle {
+  font-size: clamp(2.2rem, 4vw, 3.25rem);
+  font-weight: 600;
+}
+.doneText {
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+/* Resumo do pedido fechado: cabeçalho, itens comprados e totais */
+.doneOrder {
+  align-self: stretch;
+  background: var(--wax);
+  border-radius: 4px;
+  padding: 1.5rem 1.75rem;
+}
+.doneHead {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.9rem 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.doneHeadWide {
+  grid-column: 1 / -1;
+}
+.doneHead dt {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bronze);
+}
+
+.doneHead dt :global(.icon) {
+  color: currentColor;
+}
+.doneHead dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+}
+/* Itens recolhidos: a linha de resumo abre o detalhe */
+.items {
+  border-bottom: 1px solid var(--line);
+}
+
+.itemsSummary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  list-style: none;
+  transition: color 160ms var(--ease-out);
+}
+
+.itemsSummary::-webkit-details-marker {
+  display: none;
+}
+
+.itemsSummary:hover {
+  color: var(--bronze);
+}
+
+.itemsCount {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.itemsHint {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.itemsTotal {
+  margin-left: auto;
+  font-size: 1rem;
+}
+
+.itemsChevron {
+  color: var(--bronze);
+  transition: transform 220ms var(--ease-out);
+}
+
+.items[open] .itemsChevron {
+  transform: rotate(180deg);
+}
+
+.items[open] .itemsSummary {
+  border-bottom: 1px solid var(--line);
+}
+
+.doneItems {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.doneItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  font-size: 0.95rem;
+}
+
+.doneItem + .doneItem {
+  border-top: 1px solid var(--line);
+}
+.doneItemBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.doneItemName {
+  font-weight: 600;
+  color: var(--ink);
+}
+.doneItemName:hover {
+  color: var(--amber);
+}
+.doneItemMeta {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.doneText strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.doneActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.totals {
+  margin: 1.25rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.totals dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+.total {
+  margin-top: 0.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+}
+.total dt {
+  color: var(--ink);
+  font-weight: 600;
+}
+.total dd {
+  font-size: 1.4rem;
+}

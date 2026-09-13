@@ -1,0 +1,129 @@
+.page {
+  padding-block: clamp(2.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.side {
+  position: sticky;
+  top: calc(var(--header-h) + 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Bloco do usuário: sem o disco dourado cheio, só um contorno e o texto em
+   peso normal — ele identifica a conta, não disputa com o conteúdo. */
+.who {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 999px;
+  background: rgba(210, 182, 115, 0.3);
+  box-shadow: inset 0 0 0 1px rgba(154, 121, 53, 0.35);
+  color: var(--brown);
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.whoName {
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.muted {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+/* Menu de traço fino: o item em uso se marca pelo texto e por um filete,
+   sem faixa preenchida atrás. */
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.58rem 0.8rem;
+  border-radius: 3px;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  text-align: left;
+  transition: color 140ms var(--ease-out), background-color 140ms var(--ease-out);
+}
+
+.navLink :global(.icon) {
+  color: currentColor;
+  transition: color 140ms var(--ease-out);
+}
+
+.navLink:hover {
+  color: var(--ink);
+  background: var(--wax);
+}
+
+.navLink[aria-current="page"] {
+  color: var(--ink);
+  background: var(--wax);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--gold-dark);
+}
+
+.navLink[aria-current="page"] :global(.icon) {
+  color: var(--bronze);
+  opacity: 1;
+}
+
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 0;
+}
+
+.title {
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    position: static;
+  }
+
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .navLink {
+    width: auto;
+  }
+}

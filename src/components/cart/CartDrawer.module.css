@@ -1,0 +1,327 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  visibility: hidden;
+  transition: visibility 0s linear 320ms;
+}
+
+.root[data-open] {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(74, 56, 24, 0.35);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  cursor: default;
+}
+
+.root[data-open] .backdrop {
+  opacity: 1;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(100%, 27rem);
+  background: var(--wax);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 340ms var(--ease-out);
+  will-change: transform;
+  box-shadow: -20px 0 60px rgba(122, 93, 41, 0.14);
+}
+
+.root[data-open] .panel {
+  transform: translateX(0);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.close .icon {
+  color: currentColor;
+}
+
+.close:hover {
+  color: var(--ink);
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.75rem;
+  color: var(--ink-soft);
+}
+
+.empty p {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 1.75rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.thumb {
+  background: var(--paper);
+  border-radius: 3px;
+  padding: 0.4rem;
+}
+
+.itemBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.itemTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.itemName {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.itemPrice {
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.itemMeta {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.itemActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+}
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+}
+
+.qty button {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+}
+
+.qty button:hover {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.qty span {
+  min-width: 1.75rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.remove .icon {
+  color: currentColor;
+}
+
+.remove:hover {
+  color: var(--ink);
+}
+
+.foot {
+  padding: 1.25rem 1.75rem 1.75rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.shipping {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--bronze);
+}
+
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 1rem;
+}
+
+.subtotal .price {
+  font-size: 1.3rem;
+}
+
+.checkout {
+  width: 100%;
+}
+
+/* Aviso do carrinho: ícone à esquerda, texto alinhado, ação só quando cabe */
+.error {
+  margin: 1rem 1.75rem 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--gold-light);
+  background: rgba(210, 182, 115, 0.16);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.error :global(.icon) {
+  margin-top: 0.1rem;
+  color: var(--bronze);
+}
+
+.errorBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.list[data-busy] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.qty button:disabled,
+.remove:disabled {
+  cursor: progress;
+}
+
+/* ---------------------------------------------------------------------------
+   Movimento do painel
+   As regras abaixo só ganham nome de animação quando o carrinho abre, então é a
+   própria abertura que dispara a entrada — sem remontar nada no React. Um item
+   adicionado com o painel já aberto entra sozinho, pelo mesmo caminho.
+--------------------------------------------------------------------------- */
+
+@keyframes cart-item-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cart-block-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.root[data-open] .item {
+  animation: cart-item-in 380ms var(--ease-out) both;
+}
+
+.root[data-open] .item:nth-child(2) {
+  animation-delay: 55ms;
+}
+
+.root[data-open] .item:nth-child(3) {
+  animation-delay: 110ms;
+}
+
+.root[data-open] .item:nth-child(4) {
+  animation-delay: 165ms;
+}
+
+.root[data-open] .item:nth-child(n + 5) {
+  animation-delay: 210ms;
+}
+
+.root[data-open] .empty,
+.root[data-open] .foot {
+  animation: cart-block-in 420ms var(--ease-out) 100ms both;
+}
+
+.list {
+  scroll-behavior: smooth;
+  transition: opacity 200ms var(--ease-out);
+}
+
+/* O subtotal é remontado a cada valor novo, então a animação roda de novo */
+.subtotalValue {
+  animation: cart-block-in 280ms var(--ease-out) both;
+}

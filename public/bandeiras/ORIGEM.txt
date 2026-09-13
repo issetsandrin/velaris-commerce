@@ -1,0 +1,13 @@
+Ícones das bandeiras de cartão.
+
+Origem: pacote npm "payment-icons" (https://github.com/aaronfagan/svg-credit-card-payment-icons
+e derivados), distribuído sob a Mozilla Public License 2.0 — o texto da licença está
+em LICENSE.txt, ao lado destes arquivos.
+
+Os arquivos foram copiados para cá em vez de virar dependência de execução: são
+estáticos e não mudam. Para atualizar, instale o pacote e copie de novo
+node_modules/payment-icons/min/flat/*.svg.
+
+As marcas em si (Visa, Mastercard, Elo, American Express, Diners Club, Hipercard)
+pertencem às respectivas bandeiras e aparecem aqui apenas para identificar o meio
+de pagamento, como é praxe em checkout.

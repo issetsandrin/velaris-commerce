@@ -1,0 +1,260 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-block: 1.75rem;
+  margin-block: 1.75rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.sizes {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.legend {
+  padding: 0;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--bronze);
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 1rem 0.75rem 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--wax);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+.option:hover {
+  border-color: var(--gold-dark);
+  transform: translateY(-2px);
+}
+
+.option[data-active] {
+  border-color: var(--brown);
+  box-shadow: 0 0 0 1px var(--brown), 0 10px 24px rgba(122, 93, 41, 0.12);
+}
+
+.option[data-soldout] {
+  opacity: 0.6;
+}
+
+.option[data-soldout] .silhouette {
+  filter: grayscale(1);
+}
+
+.saleTag {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--brown);
+  color: var(--wax);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.check {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  display: grid;
+  place-items: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 999px;
+  background: var(--brown);
+  color: var(--wax);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.check .icon {
+  color: currentColor;
+}
+
+.option[data-active] .check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.silhouette {
+  display: block;
+  height: 50px;
+  margin-bottom: 0.5rem;
+}
+
+.optionLabel {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.optionMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.optionPrice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+  width: 100%;
+  font-size: 1.05rem;
+}
+
+.optionListPrice {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.option[data-sale] .optionPrice .price {
+  color: var(--brown);
+}
+
+.optionStock {
+  font-size: 0.72rem;
+  color: var(--bronze);
+  margin-top: 0.15rem;
+}
+
+.optionStock[data-soldout] {
+  color: var(--ink-soft);
+}
+
+.price[data-sale] {
+  color: var(--brown);
+}
+
+.buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.price {
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.unitPrice {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--wax);
+}
+
+.qty button {
+  width: 2.75rem;
+  height: 100%;
+  min-height: 3rem;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+}
+
+.qty button:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.qty button:disabled {
+  color: var(--line-strong);
+  cursor: not-allowed;
+}
+
+.qty span {
+  min-width: 2rem;
+  text-align: center;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* O rótulo nunca quebra: se não couberem lado a lado, os botões é que quebram
+   para a linha de baixo. */
+.button {
+  flex: 1 1 13.5rem;
+  min-width: 13.5rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .option {
+    padding: 0.75rem 0.4rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .button {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.error {
+  font-size: 0.875rem;
+  color: var(--amber);
+}

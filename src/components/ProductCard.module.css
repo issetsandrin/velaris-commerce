@@ -1,0 +1,240 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.art {
+  position: relative;
+  background: var(--wax);
+  border-radius: 4px;
+  padding: 12% 18%;
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  transition: background-color 260ms var(--ease-out), box-shadow 320ms var(--ease-out),
+    transform 320ms var(--ease-out);
+}
+
+.art:hover {
+  background: #fffdf9;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(122, 93, 41, 0.12);
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  transition: transform 420ms var(--ease-out);
+}
+
+.art:hover .svg {
+  transform: translateY(-4px);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.name a:hover {
+  color: var(--amber);
+}
+
+.meta {
+  font-size: 0.875rem;
+  color: var(--bronze);
+}
+
+.buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--brown);
+  color: var(--wax);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.badge :global(.icon) {
+  color: #fff;
+}
+
+.badgeSoft {
+  background: rgba(210, 182, 115, 0.55);
+  color: var(--ink);
+}
+
+.badgeMuted {
+  background: rgba(122, 93, 41, 0.14);
+  color: var(--ink-soft);
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.listPrice {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.price[data-sale] {
+  color: var(--brown);
+}
+
+.price {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.sizeNote {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.add {
+  min-height: 2.6rem;
+  transition: opacity 200ms var(--ease-out), background-color 180ms var(--ease-out),
+    color 180ms var(--ease-out), border-color 180ms var(--ease-out),
+    transform 120ms var(--ease-out);
+  padding: 0 1.1rem;
+  font-size: 0.9rem;
+}
+
+.add[data-pending] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: var(--wax);
+}
+
+.qty button {
+  width: 2.4rem;
+  height: 2.6rem;
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+  transition: color 140ms var(--ease-out), background-color 140ms var(--ease-out),
+    transform 120ms var(--ease-out);
+}
+
+.qty button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.qty button:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.qty button:disabled {
+  cursor: progress;
+}
+
+.qty span {
+  min-width: 1.75rem;
+  text-align: center;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   Visualização em linha: a arte vai para a esquerda e o resto se espalha,
+   aproveitando a largura em vez de empilhar.
+--------------------------------------------------------------------------- */
+.card[data-layout="linha"] {
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: 0.75rem;
+  background: var(--wax);
+  border-radius: 6px;
+}
+
+/* Recuo em rem, não em porcentagem: como a arte é item de flex, um padding
+   percentual se mede pela largura do card inteiro e engolia a vela. */
+.card[data-layout="linha"] .art {
+  width: clamp(7rem, 14vw, 9.5rem);
+  flex-shrink: 0;
+  aspect-ratio: 1;
+  padding: 0.85rem;
+  background: var(--paper);
+}
+
+.card[data-layout="linha"] .art:hover {
+  transform: none;
+  box-shadow: none;
+  background: #fffdf9;
+}
+
+.card[data-layout="linha"] .body {
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  min-width: 0;
+}
+
+.card[data-layout="linha"] .buy {
+  border-top: 0;
+  padding-top: 0;
+  flex-shrink: 0;
+  gap: 1.25rem;
+}
+
+.card[data-layout="linha"] .badge {
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .card[data-layout="linha"] .body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .card[data-layout="linha"] .buy {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

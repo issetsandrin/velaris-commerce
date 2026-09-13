@@ -1,0 +1,105 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  padding: clamp(2rem, 5vw, 4rem);
+  background: linear-gradient(160deg, #efe4cc 0%, var(--gold-light) 55%, var(--gold) 100%);
+  color: var(--ink);
+}
+
+.glow {
+  position: absolute;
+  inset: 5% -20% auto -20%;
+  height: 80%;
+  background: radial-gradient(ellipse at 50% 40%, rgba(251, 248, 242, 0.8) 0%, rgba(251, 248, 242, 0.25) 40%, transparent 68%);
+  pointer-events: none;
+}
+
+.panel > :global(*):not(.glow) {
+  position: relative;
+}
+
+.formSide {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-items: center;
+  padding: 1.5rem var(--gutter) clamp(2.5rem, 6vw, 5rem);
+}
+
+.topbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.back:hover {
+  color: var(--ink);
+}
+
+.back .icon {
+  color: currentColor;
+}
+
+.card {
+  width: min(100%, 26rem);
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .panel {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem var(--gutter);
+  }
+
+  .glow {
+    display: none;
+  }
+
+        .formSide {
+    padding-top: 1.25rem;
+  }
+
+  .card {
+    align-self: start;
+  }
+}

@@ -1,0 +1,528 @@
+.page {
+  padding-block: clamp(2.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 3.25rem);
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.block {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.blockTitle {
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.field input {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--wax);
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  padding: 0.75rem 0.9rem;
+  transition: border-color 160ms var(--ease-out);
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(210, 182, 115, 0.35);
+}
+
+.hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--bronze);
+}
+
+.hint .icon {
+  margin-top: 0.25rem;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+
+.radio input {
+  accent-color: var(--amber);
+}
+
+.submit {
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.summary {
+  position: sticky;
+  top: calc(var(--header-h) + 1.5rem);
+  background: var(--wax);
+  border-radius: 4px;
+  padding: 1.75rem;
+}
+
+.summaryTitle {
+  font-size: 1.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+
+.lineArt {
+  background: var(--paper);
+  border-radius: 3px;
+  padding: 0.25rem;
+}
+
+.lineBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.lineName {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.lineMeta {
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+.totals {
+  margin: 1.25rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.totals dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.total {
+  margin-top: 0.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+}
+
+.total dt {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.total dd {
+  font-size: 1.4rem;
+}
+
+.done {
+  padding-block: clamp(2rem, 4vw, 3rem) clamp(4rem, 10vw, 8rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+
+
+.doneText {
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+.field input[aria-invalid="true"] {
+  border-color: var(--amber);
+}
+
+.fieldError {
+  font-size: 1rem;
+  color: var(--amber);
+}
+
+.formError {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--danger-line);
+  background: var(--danger-soft);
+  border-radius: 3px;
+  font-size: 0.9rem;
+  color: var(--danger);
+}
+
+.addressList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* Com um único cadastro o card ocupa a linha inteira, em vez de deixar metade
+   da largura vazia ao lado. A partir do segundo, volta às duas colunas. */
+.addressList:has(> :only-child) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.addAddress {
+  width: 100%;
+}
+
+/* Hover sólido: o botão preenche, em vez de só escurecer a borda */
+.addAddress:hover {
+  background: var(--brown);
+  border-color: var(--brown);
+  color: var(--wax);
+}
+
+.addAddress:hover :global(.icon) {
+  color: currentColor;
+}
+
+.newAddress {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.newAddressHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.newAddressHead button {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 640px) {
+  .addressList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.coupon {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.couponForm {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.couponForm input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.couponForm input:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(210, 182, 115, 0.35);
+}
+
+.couponForm .btn {
+  min-height: 2.6rem;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+}
+
+.couponApplied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 3px;
+  background: rgba(210, 182, 115, 0.25);
+  font-size: 0.9rem;
+}
+
+.couponApplied span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.couponApplied button {
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+}
+
+.couponApplied button:hover {
+  color: var(--ink);
+}
+
+.couponError {
+  font-size: 0.85rem;
+  color: var(--amber);
+}
+
+.saveRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.saveHint {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.payments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Formas de pagamento lado a lado; empilham sozinhas quando não cabem */
+.paymentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  align-items: stretch;
+}
+
+.paymentGrid .payment {
+  align-items: flex-start;
+}
+
+.payment {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: var(--wax);
+  cursor: pointer;
+  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+.payment:hover {
+  border-color: var(--gold-dark);
+}
+
+.payment[data-active] {
+  border-color: var(--brown);
+  box-shadow: 0 0 0 1px var(--brown);
+}
+
+.payment:has(input:focus-visible) {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.paymentBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.paymentName {
+  font-weight: 600;
+}
+
+.paymentMeta {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.shippingChoice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.shippingLabel {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.shippingPrice {
+  margin-left: auto;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.installments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  max-width: 22rem;
+}
+
+.shippingChoice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.shippingLabel {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.shippingPrice {
+  margin-left: auto;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.installments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  max-width: 22rem;
+}
+
+.installments select {
+  /* Sem a aparência do sistema: a seta é desenhada aqui, no mesmo traço dos
+     ícones do site e na cor de --bronze. */
+  appearance: none;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background-color: var(--wax);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239a7935' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0.7rem 2.5rem 0.7rem 0.9rem;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+.installments select:hover {
+  border-color: var(--gold-dark);
+}
+
+.installments select:focus-visible {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(210, 182, 115, 0.35);
+}
+

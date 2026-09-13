@@ -1,0 +1,158 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  /* Texto sempre no topo, à esquerda, mesmo quando o card ao lado é mais alto */
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: var(--wax);
+  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+label.card {
+  cursor: pointer;
+}
+
+/* Card sozinho na lista: como ele ocupa a linha inteira, as informações ficam
+   lado a lado e o selo de padrão vai para a ponta direita. O `display: contents`
+   no cabeçalho solta título e selo direto na linha do card. */
+.card[data-inline] {
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 1.25rem;
+  row-gap: 0.2rem;
+}
+
+.card[data-inline] .head {
+  display: contents;
+}
+
+.card[data-inline] .badge {
+  order: 1;
+  margin-left: auto;
+}
+
+.card[data-inline] .actions {
+  order: 2;
+  flex-basis: 100%;
+}
+
+label.card:hover {
+  border-color: var(--gold-dark);
+}
+
+.card[data-selected] {
+  border-color: var(--brown);
+  box-shadow: 0 0 0 1px var(--brown);
+}
+
+.card:has(input:focus-visible) {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--brown);
+  background: rgba(210, 182, 115, 0.3);
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+}
+
+.line {
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.actions {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.actions button:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.actions button:disabled {
+  cursor: progress;
+}
+
+.actions .icon {
+  color: currentColor;
+}
+
+/* ---------------------------------------------------------------------------
+   Variante de Minha conta
+   Aqui o card é de gerenciamento, não de escolha: o conteúdo fica no topo e as
+   ações encostam no rodapé, para que dois cards lado a lado terminem na mesma
+   linha mesmo com endereços de tamanhos diferentes. Não vale no checkout.
+--------------------------------------------------------------------------- */
+
+.card[data-account] {
+  padding: 0.85rem 1rem;
+}
+
+.card[data-account] .title {
+  font-size: 1.05rem;
+}
+
+.card[data-account] .line {
+  margin-top: 0.2rem;
+}
+
+/* Último bloco de texto antes das ações: garante respiro mesmo no card mais
+   alto da linha, onde o margin-top: auto abaixo não sobra espaço nenhum. */
+.card[data-account] .meta {
+  margin-bottom: 0.7rem;
+}
+
+.card[data-account] .actions {
+  margin-top: auto;
+}
