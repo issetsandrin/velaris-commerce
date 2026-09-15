@@ -29,6 +29,38 @@
   border-right: 1px solid var(--line);
 }
 
+/* Botão que abre e fecha os filtros no celular; no computador não existe. */
+.filtrosBotao {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--wax);
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.filtrosBotao :global(.icon):last-child {
+  margin-left: auto;
+}
+
+.filtrosContador {
+  display: grid;
+  place-items: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding-inline: 0.35rem;
+  border-radius: 999px;
+  background: var(--gold-dark);
+  color: var(--wax);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 /* Mesmo desenho do filtro de Meus pedidos: traço fino, ícone dentro, fundo do bloco */
 .search {
   display: flex;
@@ -321,6 +353,7 @@
 }
 
 .results {
+  scroll-margin-top: var(--header-total);
   min-width: 0;
 }
 
@@ -379,7 +412,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr));
   gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 2.5vw, 2rem);
 }
 
@@ -412,50 +445,6 @@
   }
 }
 
-/* Paginação: só entra quando a coleção passa de uma página.
-   Sem bordas, cantos redondos e a página atual marcada por um fundo suave. */
-.paginacao {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem;
-  margin-top: 2.5rem;
-}
-
-.paginacao button {
-  display: grid;
-  place-items: center;
-  min-width: 2.1rem;
-  height: 2.1rem;
-  padding-inline: 0.55rem;
-  border: 0;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-soft);
-  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
-}
-
-.paginacao button:hover:not(:disabled) {
-  background: var(--wax);
-  color: var(--ink);
-}
-
-.paginacao button[aria-current="page"] {
-  background: rgba(210, 182, 115, 0.35);
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.paginacao button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.paginacao :global(.icon) {
-  color: currentColor;
-}
-
 .emptyState {
   padding: 3rem 0;
   animation: card-in 420ms var(--ease-out) both;
@@ -475,7 +464,7 @@
 
 @media (max-width: 860px) {
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   /* Numa coluna só, os filtros voltam para cima do catálogo */
@@ -494,8 +483,47 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Celular: abertos, os filtros empurravam a primeira vela para duas telas
+   abaixo. A busca continua à mostra e o resto fica atrás do botão Filtros.
+--------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .sidebar {
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .filtrosBotao {
+    display: flex;
+  }
+
+  .sidebar:not([data-aberto]) .group {
+    display: none;
+  }
+
+  .group {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 @media (max-width: 520px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .search input,
+  .viewToggle button {
+    min-height: 3rem;
+  }
+
+  .option,
+  .check {
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
   }
 }

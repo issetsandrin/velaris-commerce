@@ -98,7 +98,7 @@ export function Payment({ number }: { number: string }) {
     try {
       setPayment(await createPixCharge(number));
     } catch (erro) {
-      setError(erro instanceof ApiError ? erro.message : "Não foi possível gerar o Pix.");
+      setError(erro instanceof ApiError ? erro.message : "Não foi possível gerar a cobrança Pix.");
     }
   }, [number]);
 
@@ -118,7 +118,7 @@ export function Payment({ number }: { number: string }) {
 
       setSemNoticia(true);
     } catch (erro) {
-      setError(erro instanceof ApiError ? erro.message : "Não foi possível verificar o pagamento.");
+      setError(erro instanceof ApiError ? erro.message : "Não foi possível verificar o pagamento. Tente novamente.");
     } finally {
       setVerificando(false);
     }
@@ -131,7 +131,7 @@ export function Payment({ number }: { number: string }) {
       setCopiado(true);
       window.setTimeout(() => setCopiado(false), 2000);
     } catch {
-      setError("Não foi possível copiar. Selecione o código e copie à mão.");
+      setError("Não foi possível copiar automaticamente. Selecione o código e copie manualmente.");
     }
   }
 
@@ -235,8 +235,8 @@ export function Payment({ number }: { number: string }) {
 
                   {semNoticia && (
                     <p className={styles.pending} role="status">
-                      Ainda não identificamos o pagamento. Se você acabou de pagar, aguarde alguns
-                      segundos: a confirmação chega sozinha.
+                      Pagamento ainda não identificado. Se a transferência acabou de ser feita, a
+                      confirmação costuma levar alguns segundos.
                     </p>
                   )}
                 </>

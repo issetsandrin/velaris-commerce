@@ -216,20 +216,21 @@
 
 @media (max-width: 860px) {
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
+  /* Numa coluna, o resumo com o botão de confirmar vinha ANTES do formulário:
+     a pessoa via "Confirmar pedido" antes de escolher pagamento e entrega. */
   .summary {
     position: static;
-    order: -1;
+    order: 0;
   }
 }
 
 @media (max-width: 480px) {
   .row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
-
 }
 
 .field input[aria-invalid="true"] {
@@ -396,7 +397,7 @@
 /* Formas de pagamento lado a lado; empilham sozinhas quando não cabem */
 .paymentGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   align-items: stretch;
 }
 

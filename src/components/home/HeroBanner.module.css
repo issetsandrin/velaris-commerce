@@ -1,0 +1,188 @@
+/* Banner do topo: a imagem ocupa a faixa inteira e o texto vem por cima */
+/* Ocupa a tela inteira abaixo da barra do topo: quem rola encontra as seções
+   seguintes logo depois. O dvh acompanha a barra do navegador no celular. */
+.hero {
+  position: relative;
+  scroll-margin-top: var(--header-total);
+  height: calc(100dvh - var(--header-h));
+  min-height: 22rem;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 700ms var(--ease-out), visibility 0s linear 700ms;
+}
+
+.slide[data-ativo] {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.imagem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Véu claro: garante leitura do texto sobre qualquer arte. A direção acompanha
+   o lado onde o texto foi posicionado no painel. */
+.veu {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(245, 240, 232, 0.92) 0%, rgba(245, 240, 232, 0.7) 42%, rgba(245, 240, 232, 0.15) 75%);
+}
+
+.slide[data-align="direita"] .veu {
+  background: linear-gradient(260deg, rgba(245, 240, 232, 0.92) 0%, rgba(245, 240, 232, 0.7) 42%, rgba(245, 240, 232, 0.15) 75%);
+}
+
+.slide[data-align="centro"] .veu {
+  background: radial-gradient(ellipse at center, rgba(245, 240, 232, 0.9) 0%, rgba(245, 240, 232, 0.65) 45%, rgba(245, 240, 232, 0.25) 80%);
+}
+
+.conteudo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 46rem;
+}
+
+.slide[data-align="centro"] .conteudo {
+  align-items: center;
+  text-align: center;
+  margin-inline: auto;
+}
+
+.slide[data-align="direita"] .conteudo {
+  align-items: flex-end;
+  text-align: right;
+  margin-left: auto;
+}
+
+.titulo {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+}
+
+.texto {
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 44ch;
+}
+
+.botao {
+  margin-top: 0.35rem;
+}
+
+.pontos {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  /* Acima do texto do banner: sem isso o conteúdo cobria metade da área de
+     toque dos pontinhos. */
+  z-index: 2;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+}
+
+.ponto {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(122, 93, 41, 0.35);
+  transition: width 220ms var(--ease-out), background-color 220ms var(--ease-out);
+}
+
+.ponto[aria-selected="true"] {
+  width: 1.6rem;
+  background: var(--brown);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide {
+    transition: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* A bolinha continua do mesmo tamanho; quem cresce é a área invisível
+     que recebe o toque. */
+  .ponto {
+    position: relative;
+  }
+
+  .ponto::after {
+    content: "";
+    position: absolute;
+    inset: -1.1rem -0.45rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Celular: a arte do banner ocupa a tela toda e o texto precisa de contraste
+   próprio. O véu vira de baixo para cima, o texto desce para o rodapé da
+   imagem e ganha corpo maior, que é onde o polegar e o olho vão primeiro.
+--------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .veu,
+  .slide[data-align="direita"] .veu,
+  .slide[data-align="centro"] .veu {
+    background: linear-gradient(
+      to top,
+      rgba(245, 240, 232, 0.97) 0%,
+      rgba(245, 240, 232, 0.92) 38%,
+      rgba(245, 240, 232, 0.55) 62%,
+      rgba(245, 240, 232, 0.18) 100%
+    );
+  }
+
+  .slide {
+    align-items: end;
+  }
+
+  .conteudo,
+  .slide[data-align="centro"] .conteudo,
+  .slide[data-align="direita"] .conteudo {
+    align-items: flex-start;
+    text-align: left;
+    margin: 0;
+    padding-bottom: 3.5rem;
+  }
+
+  .titulo {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+    max-width: 14ch;
+  }
+
+  .texto {
+    font-size: 1rem;
+    max-width: 34ch;
+  }
+
+  .botao {
+    margin-top: 0.6rem;
+  }
+
+  .pontos {
+    left: var(--gutter);
+    bottom: 1.4rem;
+    transform: none;
+  }
+}

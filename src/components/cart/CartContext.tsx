@@ -65,7 +65,7 @@ function writeToken(token: string) {
 
 function messageFrom(error: unknown): string {
   if (error instanceof ApiError) return error.message;
-  return "Algo deu errado ao atualizar o carrinho.";
+  return "Não foi possível atualizar o carrinho.";
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {

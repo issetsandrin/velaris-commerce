@@ -4,6 +4,7 @@ import { Icon } from "@/components/Icon";
 import { Flame as FlameIcon, Home, Leaf, Moon, RotateCcw, Scissors, Sparkles, Truck } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { ApiUnavailable } from "@/components/ApiUnavailable";
+import { HeroBanner } from "@/components/home/HeroBanner";
 import { ApiError, DEFAULT_STORE_CONFIG, getProducts, getStoreConfig } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { collections, type Collection, type Product } from "@/lib/products";
@@ -20,14 +21,20 @@ export default async function HomePage() {
   try {
     products = await getProducts();
   } catch (error) {
-    apiError = error instanceof ApiError ? error.message : "Erro inesperado ao carregar o catálogo.";
+    apiError = error instanceof ApiError ? error.message : "Não foi possível carregar o catálogo.";
   }
 
   const featured = products.filter((product) => product.featured).slice(0, 4);
-  const freeFrom = await getStoreConfig().then((config) => config.shipping.freeFrom).catch(() => DEFAULT_STORE_CONFIG.shipping.freeFrom);
+  const config = await getStoreConfig().catch(() => DEFAULT_STORE_CONFIG);
+  const freeFrom = config.shipping.freeFrom;
+  // Banner só entra se o painel pedir e houver arte cadastrada; senão, a vela.
+  const comBanner = config.home.heroStyle === "banner" && config.home.banners.length > 0;
 
   return (
-    <>
+    <div className={styles.home}>
+      {comBanner ? (
+        <HeroBanner banners={config.home.banners} interval={config.home.heroInterval} />
+      ) : (
       <section className={styles.hero}>
         <div className={`container ${styles.heroInner}`}>
           <div className={`enter-children ${styles.heroCopy}`}>
@@ -50,6 +57,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       <section className={`section ${styles.featured}`}>
         <div className="container">
@@ -164,6 +172,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

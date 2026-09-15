@@ -6,12 +6,16 @@ import { CalendarDays, CircleCheckBig, CircleX, Clock, CreditCard, ListFilter, M
 import { CandleArt } from "../CandleArt";
 import { Icon } from "../Icon";
 import { SkeletonOrder } from "../Skeleton";
+import { Pagination } from "../Pagination";
 import { Select } from "../form/Select";
 import { formatPostalCode } from "../address/AddressCard";
 import { formatPrice } from "@/lib/format";
 import { ApiError, getProducts, myOrders, type Order } from "@/lib/api";
 import type { Product } from "@/lib/products";
 import styles from "./Orders.module.css";
+
+/** Quantos pedidos cabem numa página antes de a lista virar paginada. */
+const POR_PAGINA = 5;
 
 const statusInfo: Record<string, { label: string; icon: LucideIcon }> = {
   recebido: { label: "Recebido", icon: Clock },
@@ -27,6 +31,7 @@ export function Orders() {
   const [situacao, setSituacao] = useState("");
   const [de, setDe] = useState("");
   const [ate, setAte] = useState("");
+  const [pagina, setPagina] = useState(1);
   const [products, setProducts] = useState<Record<string, Product>>({});
   const [error, setError] = useState<string | null>(null);
 
@@ -57,6 +62,23 @@ export function Orders() {
 
   const filtrando = Boolean(numero.trim() || de || ate || situacao);
 
+  const paginas = Math.max(1, Math.ceil(filtrados.length / POR_PAGINA));
+  const paginaAtual = Math.min(pagina, paginas);
+  const visiveis = filtrados.slice((paginaAtual - 1) * POR_PAGINA, paginaAtual * POR_PAGINA);
+
+  // Mexer nos filtros devolve para a primeira página.
+  const assinatura = `${numero.trim()}|${situacao}|${de}|${ate}`;
+  const [assinaturaAnterior, setAssinaturaAnterior] = useState(assinatura);
+  if (assinaturaAnterior !== assinatura) {
+    setAssinaturaAnterior(assinatura);
+    setPagina(1);
+  }
+
+  function irPara(numeroDaPagina: number) {
+    setPagina(numeroDaPagina);
+    document.getElementById("pedidos")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   if (error) {
     return (
       <p className={styles.error} role="alert">
@@ -83,8 +105,8 @@ export function Orders() {
     return (
       <div className={styles.empty}>
         <Icon icon={PackageOpen} size={40} />
-        <p className={styles.emptyTitle}>Você ainda não fez nenhum pedido.</p>
-        <p className={styles.muted}>Quando fizer, ele aparece aqui com status, itens e endereço de entrega.</p>
+        <p className={styles.emptyTitle}>Nenhum pedido registrado.</p>
+        <p className={styles.muted}>Seus pedidos aparecem aqui com situação, itens e endereço de entrega.</p>
         <Link href="/colecao" className="btn btn-primary">
           Ver a coleção
         </Link>
@@ -152,22 +174,23 @@ export function Orders() {
         {filtros}
         <div className={styles.empty}>
           <Icon icon={SearchX} size={40} />
-          <p className={styles.emptyTitle}>Nenhum pedido com esses filtros.</p>
-          <p className={styles.muted}>Confira o número digitado ou amplie o período.</p>
+          <p className={styles.emptyTitle}>Nenhum pedido corresponde aos filtros.</p>
+          <p className={styles.muted}>Revise o número informado ou amplie o período.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} id="pedidos">
       {filtros}
       <p className={styles.count} aria-live="polite">
         {filtrados.length} {filtrados.length === 1 ? "pedido" : "pedidos"}
         {filtrando ? ` de ${orders.length}` : ""}
+        {paginas > 1 ? `, página ${paginaAtual} de ${paginas}` : ""}
       </p>
       <ul className={styles.list}>
-      {filtrados.map((order) => {
+      {visiveis.map((order) => {
         const status = statusInfo[order.status] ?? { label: order.status, icon: Clock };
         const date = new Date(order.createdAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
         return (
@@ -269,6 +292,8 @@ export function Orders() {
         );
       })}
       </ul>
+
+      <Pagination page={paginaAtual} pages={paginas} onChange={irPara} label="Páginas dos pedidos" />
     </div>
   );
 }

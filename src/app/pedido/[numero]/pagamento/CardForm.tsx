@@ -54,7 +54,7 @@ export function CardForm({ number, total, installments, onPaid }: CardFormProps)
       const cobranca = await payWithCard(number, { numero, nome, validade, cvv, parcelas: installments });
 
       if (cobranca.status === "recusado") {
-        setRecusa(cobranca.failureReason ?? "Pagamento não autorizado.");
+        setRecusa(cobranca.failureReason ?? "Pagamento não autorizado pelo emissor.");
         return;
       }
 
@@ -64,7 +64,7 @@ export function CardForm({ number, total, installments, onPaid }: CardFormProps)
         setFieldErrors(erro.errors ?? {});
         setRecusa(erro.errors ? null : erro.message);
       } else {
-        setRecusa("Não foi possível processar o cartão.");
+        setRecusa("Não foi possível processar o cartão. Tente novamente.");
       }
     } finally {
       setEnviando(false);

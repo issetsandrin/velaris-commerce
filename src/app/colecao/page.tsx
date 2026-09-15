@@ -19,7 +19,7 @@ async function loadProducts(): Promise<{ products: Product[]; error: string | nu
   } catch (error) {
     return {
       products: [],
-      error: error instanceof ApiError ? error.message : "Erro inesperado ao carregar o catálogo.",
+      error: error instanceof ApiError ? error.message : "Não foi possível carregar o catálogo.",
     };
   }
 }

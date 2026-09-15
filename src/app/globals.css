@@ -25,9 +25,20 @@
 
   --measure: 62ch;
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
-  --header-h: 4.5rem;
+  /* Barra mais alta para a logotipo caber com presença */
+  --header-h: 5.5rem;
+  /* Altura total da barra fixa, somando o filete de baixo */
+  --header-total: calc(var(--header-h) + 1px);
+  /* Altura da faixa de confirmação de e-mail, quando ela está à mostra */
+  --aviso-h: 2.9rem;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Com a faixa de confirmação à mostra o topo fixo cresce, e toda rolagem que
+   usa --header-total (navegação, âncoras, encaixe da home) acompanha. */
+:root:has([data-aviso-email]) {
+  --header-total: calc(var(--header-h) + 1px + var(--aviso-h));
 }
 
 *,
@@ -39,6 +50,9 @@
 html {
   color-scheme: light;
   scroll-behavior: smooth;
+  /* O site inteiro é medido em rem: encolher a base deixa tudo no tamanho de
+     um zoom de 90%, sem mexer nas alturas em dvh do banner e das seções. */
+  font-size: 90%;
 }
 
 body {
@@ -174,6 +188,39 @@ svg {
 
 .section {
   padding-block: clamp(4rem, 9vw, 7.5rem);
+}
+
+/* Ao trocar de página o Next traz o primeiro bloco do conteúdo para a janela.
+   Sem esta margem a rolagem para na altura da barra fixa e o topo da página
+   fica escondido atrás dela. */
+main > * {
+  scroll-margin-top: var(--header-total);
+}
+
+/* O navegador dá min-width: min-content a fieldset, e isso trava a largura
+   no celular: o bloco fica maior que a tela e a página rola de lado. */
+fieldset {
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Toque: num celular o dedo cobre bem mais que o cursor. Em telas sem cursor,
+   os controles ganham altura mínima de 3rem, que com a base do site em 90%
+   dá 43px, a medida recomendada pela Apple e pelo Material.
+--------------------------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .toque {
+    min-height: 3rem;
+  }
+
+  /* Botões e links de ação em bloco: crescem pelo espaçamento interno, para o
+     texto continuar do mesmo tamanho. */
+  .toque-fino {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+  }
 }
 
 /* Rótulo pequeno com filete acima, usado para anunciar seções */

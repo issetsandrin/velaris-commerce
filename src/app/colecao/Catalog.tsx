@@ -5,9 +5,10 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { Icon } from "@/components/Icon";
-import { ChevronLeft, ChevronRight, Flower2, Layers, LayoutGrid, Rows3, Search, SearchX, Tag, Wallet, X } from "lucide-react";
+import { ChevronDown, ChevronUp, Flower2, Layers, LayoutGrid, Rows3, Search, SearchX, SlidersHorizontal, Tag, Wallet, X } from "lucide-react";
 import { collections, families, isOnSale, type Collection, type Family, type Product } from "@/lib/products";
 import { formatPrice } from "@/lib/format";
+import { Pagination } from "@/components/Pagination";
 import styles from "./Catalog.module.css";
 
 /** Quantas velas cabem numa página antes de a lista virar paginada. */
@@ -46,6 +47,9 @@ export function Catalog({ products }: { products: Product[] }) {
 
   // O campo é controlado localmente: preso à URL, cada tecla atropelava a anterior.
   const [visao, setVisao] = useState<"grade" | "linha">("grade");
+  // No celular os filtros ficam guardados atrás de um botão: abertos, empurram
+  // o catálogo para duas telas abaixo.
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
   const [pagina, setPagina] = useState(1);
   const [busca, setBusca] = useState(search);
   const termo = normalizar(busca);
@@ -152,6 +156,10 @@ export function Catalog({ products }: { products: Product[] }) {
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   }
 
+  // Número no botão de filtros: conta só o que muda o resultado.
+  const filtrosAtivos =
+    (collection ? 1 : 0) + (family ? 1 : 0) + (onlySale ? 1 : 0) + (piso > pisoCatalogo || teto < tetoCatalogo ? 1 : 0);
+
   // Paginação: só aparece quando a lista passa de uma página cheia.
   const paginas = Math.max(1, Math.ceil(list.length / POR_PAGINA));
   const paginaAtual = Math.min(pagina, paginas);
@@ -184,7 +192,7 @@ export function Catalog({ products }: { products: Product[] }) {
         </header>
 
         <div className={styles.layout}>
-          <aside className={styles.sidebar} aria-label="Filtros">
+          <aside className={styles.sidebar} aria-label="Filtros" data-aberto={filtrosAbertos || undefined}>
             <div className={styles.search}>
               <Icon icon={Search} size={16} />
               <input
@@ -200,6 +208,18 @@ export function Catalog({ products }: { products: Product[] }) {
                 </button>
               )}
             </div>
+
+            <button
+              type="button"
+              className={styles.filtrosBotao}
+              onClick={() => setFiltrosAbertos((aberto) => !aberto)}
+              aria-expanded={filtrosAbertos}
+            >
+              <Icon icon={SlidersHorizontal} size={16} />
+              Filtros
+              {filtrosAtivos > 0 && <span className={styles.filtrosContador}>{filtrosAtivos}</span>}
+              <Icon icon={filtrosAbertos ? ChevronUp : ChevronDown} size={16} />
+            </button>
 
             <fieldset className={styles.group}>
               <legend className={styles.legend}>
@@ -324,7 +344,7 @@ export function Catalog({ products }: { products: Product[] }) {
             <div className={styles.countRow}>
               <p className={styles.count} aria-live="polite">
                 {list.length === 0
-                  ? "Nenhuma vela com essa combinação."
+                  ? "Nenhum resultado."
                   : paginas > 1
                     ? `${list.length} velas, página ${paginaAtual} de ${paginas}`
                     : `${list.length} ${list.length === 1 ? "vela" : "velas"}`}
@@ -357,8 +377,8 @@ export function Catalog({ products }: { products: Product[] }) {
                 <Icon icon={SearchX} size={32} />
                 <p>
                   {busca
-                    ? `Nenhuma vela encontrada para "${busca}".`
-                    : "Ainda não fizemos uma vela assim. Experimente soltar um dos filtros."}
+                    ? `Nenhum resultado para "${busca}".`
+                    : "Nenhuma vela corresponde aos filtros selecionados."}
                 </p>
                 <Link href="/colecao" className="link-underline">
                   Limpar filtros
@@ -372,39 +392,7 @@ export function Catalog({ products }: { products: Product[] }) {
                   ))}
                 </div>
 
-                {paginas > 1 && (
-                  <nav className={styles.paginacao} aria-label="Páginas da coleção">
-                    <button
-                      type="button"
-                      onClick={() => irPara(paginaAtual - 1)}
-                      disabled={paginaAtual === 1}
-                      aria-label="Página anterior"
-                    >
-                      <Icon icon={ChevronLeft} size={16} />
-                    </button>
-
-                    {Array.from({ length: paginas }, (_, i) => i + 1).map((numero) => (
-                      <button
-                        key={numero}
-                        type="button"
-                        onClick={() => irPara(numero)}
-                        aria-current={numero === paginaAtual ? "page" : undefined}
-                        aria-label={`Página ${numero}`}
-                      >
-                        {numero}
-                      </button>
-                    ))}
-
-                    <button
-                      type="button"
-                      onClick={() => irPara(paginaAtual + 1)}
-                      disabled={paginaAtual === paginas}
-                      aria-label="Próxima página"
-                    >
-                      <Icon icon={ChevronRight} size={16} />
-                    </button>
-                  </nav>
-                )}
+                <Pagination page={paginaAtual} pages={paginas} onChange={irPara} label="Páginas da coleção" />
               </>
             )}
           </div>

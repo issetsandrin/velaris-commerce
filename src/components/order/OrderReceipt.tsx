@@ -1,16 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CalendarDays, ChevronDown, CircleCheckBig, CreditCard, Hash, MapPin, PackageOpen, Truck, UserRound } from "lucide-react";
+import { CandleArt } from "@/components/CandleArt";
 import { Icon } from "@/components/Icon";
 import { formatPostalCode } from "@/components/address/AddressCard";
 import { formatCpf, formatPhone, formatPrice } from "@/lib/format";
-import type { Order } from "@/lib/api";
+import { getProducts, type Order } from "@/lib/api";
+import type { Product } from "@/lib/products";
 import styles from "./OrderReceipt.module.css";
 
 /** Comprovante do pedido: usado ao fechar a compra e depois do pagamento. */
 export function OrderReceipt({ order }: { order: Order }) {
   const pecas = order.items.reduce((total, item) => total + item.quantity, 0);
+  // O pedido guarda o nome da vela, não o desenho: o catálogo traz a arte.
+  const [produtos, setProdutos] = useState<Record<string, Product>>({});
+
+  useEffect(() => {
+    getProducts()
+      .then((lista) => setProdutos(Object.fromEntries(lista.map((produto) => [produto.slug, produto]))))
+      .catch(() => {
+        // sem catálogo, os itens ficam sem a miniatura
+      });
+  }, []);
 
   return (
       <section className={`container ${styles.done}`}>
@@ -120,8 +133,14 @@ export function OrderReceipt({ order }: { order: Order }) {
             </summary>
 
             <ul className={styles.doneItems}>
-              {order.items.map((item, index) => (
+              {order.items.map((item, index) => {
+                const produto = produtos[item.productSlug];
+
+                return (
                 <li key={index} className={styles.doneItem}>
+                  <span className={styles.doneItemThumb}>
+                    {produto ? <CandleArt wax={produto.wax} collection={produto.collection} /> : null}
+                  </span>
                   <span className={styles.doneItemBody}>
                     <Link href={`/produto/${item.productSlug}`} className={styles.doneItemName}>
                       {item.productName}
@@ -132,7 +151,8 @@ export function OrderReceipt({ order }: { order: Order }) {
                   </span>
                   <span className="price">{formatPrice(item.unitPrice * item.quantity)}</span>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </details>
 

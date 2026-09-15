@@ -325,3 +325,23 @@
 .subtotalValue {
   animation: cart-block-in 280ms var(--ease-out) both;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .close,
+  .remove {
+    min-height: 3rem;
+  }
+
+  .qty button {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .itemName,
+  .thumb,
+  .empty a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+  }
+}

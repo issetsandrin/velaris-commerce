@@ -1,3 +1,19 @@
+/* A rolagem é livre: nada de encaixe automático entre as seções. O alinhamento
+   só entra quando alguém clica num link da barra do topo, e é o
+   scroll-margin-top abaixo que faz a seção parar embaixo da barra. */
+
+/* A última seção ocupa ao menos uma tela: sem isso, em janelas altas a página
+   acaba antes e o link do rodapé não consegue levá-la até o topo. */
+.home > :last-child {
+  min-height: calc(100dvh - var(--header-h));
+  display: grid;
+  align-content: center;
+}
+
+.home > * {
+  scroll-margin-top: var(--header-total);
+}
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -214,6 +230,13 @@
   }
 }
 
+/* Abaixo disso duas colunas deixam o card estreito demais para preço e botão */
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 640px) {
   .heroInner {
     grid-template-columns: 1fr;
@@ -229,5 +252,14 @@
 
   .facts {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .sectionLink,
+  .collectionItem a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
   }
 }

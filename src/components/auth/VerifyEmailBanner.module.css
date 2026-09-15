@@ -1,0 +1,97 @@
+/* Fica presa abaixo da barra do topo: a navegação rola até o começo do
+   conteúdo, e solta a faixa sumiria antes de ser lida. */
+.banner {
+  position: sticky;
+  top: calc(var(--header-h) + 1px);
+  z-index: 39;
+  min-height: var(--aviso-h);
+  background: #efe6d4;
+  border-bottom: 1px solid var(--line);
+}
+
+.inner {
+  display: flex;
+  min-height: var(--aviso-h);
+  align-items: center;
+  gap: 0.65rem;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0.6rem var(--gutter);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.action {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+.close {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink-soft);
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.close:hover {
+  background: rgba(122, 93, 41, 0.12);
+  color: var(--ink);
+}
+
+/* Celular: ícone e texto em cima, ação embaixo. Antes o botão subia para a
+   primeira linha e o aviso aparecia depois dele, fora de ordem. */
+@media (max-width: 560px) {
+  .inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 0.6rem;
+    row-gap: 0.15rem;
+    align-items: start;
+    padding-block: 0.7rem;
+  }
+
+  .inner > :global(.icon) {
+    margin-top: 0.15rem;
+  }
+
+  .text {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .close {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .action {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .action,
+  .close {
+    min-height: 3rem;
+  }
+
+  .close {
+    width: 3rem;
+  }
+}

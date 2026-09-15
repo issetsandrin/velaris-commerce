@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BellOff, CreditCard, Package, Tag, Truck, type LucideIcon } from "lucide-react";
 import { useNotices } from "./NoticesContext";
 import { Icon } from "../Icon";
+import { Pagination } from "../Pagination";
 import { Skeleton } from "../Skeleton";
 import type { Notice } from "@/lib/api";
 import styles from "./Notices.module.css";
+
+/** Quantos avisos cabem numa página antes de a lista virar paginada. */
+const POR_PAGINA = 10;
 
 const icones: Record<Notice["type"], LucideIcon> = {
   promocao: Tag,
@@ -31,6 +35,7 @@ function quando(iso: string): string {
 
 export function Notices() {
   const { notices, loading, markAllRead } = useNotices();
+  const [pagina, setPagina] = useState(1);
 
   // Abrir a aba é ler: o indicador zera depois de um instante, tempo de ver o que era novo.
   useEffect(() => {
@@ -61,17 +66,27 @@ export function Notices() {
     return (
       <div className={styles.empty}>
         <Icon icon={BellOff} size={40} />
-        <p className={styles.emptyTitle}>Nenhuma notificação por enquanto.</p>
+        <p className={styles.emptyTitle}>Nenhuma notificação.</p>
         <p className={styles.muted}>
-          Promoções da loja e o andamento dos seus pedidos, de pagamento a entrega, aparecem aqui.
+          Promoções e o andamento dos seus pedidos, do pagamento à entrega, aparecem aqui.
         </p>
       </div>
     );
   }
 
+  const paginas = Math.max(1, Math.ceil(notices.length / POR_PAGINA));
+  const paginaAtual = Math.min(pagina, paginas);
+  const visiveis = notices.slice((paginaAtual - 1) * POR_PAGINA, paginaAtual * POR_PAGINA);
+
+  function irPara(numero: number) {
+    setPagina(numero);
+    document.getElementById("notificacoes")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
-    <ul className={styles.list}>
-      {notices.map((aviso) => {
+    <div id="notificacoes" className={styles.wrap}>
+      <ul className={styles.list}>
+      {visiveis.map((aviso) => {
         const corpo = (
           <>
             <span className={styles.icon}>
@@ -97,6 +112,9 @@ export function Notices() {
           </li>
         );
       })}
-    </ul>
+      </ul>
+
+      <Pagination page={paginaAtual} pages={paginas} onChange={irPara} label="Páginas das notificações" />
+    </div>
   );
 }

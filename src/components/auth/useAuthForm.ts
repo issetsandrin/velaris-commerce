@@ -23,7 +23,7 @@ export function useAuthForm() {
         setFieldErrors(error.errors ?? {});
         setFormError(hasFieldErrors ? "Confira os campos destacados." : error.message);
       } else {
-        setFormError("Algo deu errado. Tente de novo.");
+        setFormError("Não foi possível concluir a operação. Tente novamente.");
       }
     } finally {
       setSubmitting(false);

@@ -21,6 +21,9 @@ export function GoogleSignInButton({ text = "continue_with", onCredential, disab
   const [scriptReady, setScriptReady] = useState(false);
   const [rendered, setRendered] = useState(false);
   const callbackRef = useRef(onCredential);
+  // Largura com que o botão do Google foi desenhado: ele não é fluido, e num
+  // celular estreito o padrão de 360px passava da tela.
+  const larguraDesenhada = useRef(0);
 
   useEffect(() => {
     callbackRef.current = onCredential;
@@ -36,6 +39,9 @@ export function GoogleSignInButton({ text = "continue_with", onCredential, disab
       cancel_on_tap_outside: true,
       itp_support: true,
     });
+    const largura = Math.min(400, Math.max(200, container.clientWidth || 360));
+    larguraDesenhada.current = largura;
+
     container.innerHTML = "";
     google.accounts.id.renderButton(container, {
       type: "standard",
@@ -44,7 +50,7 @@ export function GoogleSignInButton({ text = "continue_with", onCredential, disab
       text,
       shape: "rectangular",
       logo_alignment: "center",
-      width: Math.min(400, Math.max(200, container.clientWidth || 360)),
+      width: largura,
       locale: "pt-BR",
     });
     setRendered(true);
@@ -53,6 +59,20 @@ export function GoogleSignInButton({ text = "continue_with", onCredential, disab
   useEffect(() => {
     if (scriptReady || window.google) render();
   }, [scriptReady, render]);
+
+  // Girar o aparelho ou abrir num celular mais estreito redesenha o botão.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || typeof ResizeObserver === "undefined") return;
+
+    const observador = new ResizeObserver(() => {
+      const largura = container.clientWidth;
+      if (largura > 0 && Math.abs(largura - larguraDesenhada.current) > 8) render();
+    });
+
+    observador.observe(container);
+    return () => observador.disconnect();
+  }, [render]);
 
   if (!GOOGLE_CLIENT_ID) {
     return (

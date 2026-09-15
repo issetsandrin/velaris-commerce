@@ -1,6 +1,7 @@
 .root {
   position: relative;
   width: min(100%, 30rem);
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -157,5 +158,19 @@
 @media (prefers-reduced-motion: reduce) {
   .slide {
     transition: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* A bolinha continua do mesmo tamanho; quem cresce é a área invisível que
+     recebe o toque. Com padding, o fundo pintava uma bolota. */
+  .dot {
+    position: relative;
+  }
+
+  .dot::after {
+    content: "";
+    position: absolute;
+    inset: -1.1rem -0.45rem;
   }
 }

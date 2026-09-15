@@ -234,6 +234,34 @@
   white-space: nowrap;
 }
 
+/* Celular estreito: preço em cima, controles embaixo. Lado a lado, a linha
+   ficava 22px mais larga que a tela e a página rolava de lado. */
+@media (max-width: 420px) {
+  .buy {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  /* Os botões também empilham: "Adicionar ao carrinho" não cabe ao lado do
+     seletor de quantidade numa tela estreita. */
+  .actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .qty {
+    justify-content: space-between;
+  }
+
+  .button {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: normal;
+  }
+}
+
 @media (max-width: 360px) {
   .options {
     grid-template-columns: repeat(3, minmax(0, 1fr));

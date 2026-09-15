@@ -72,7 +72,7 @@ export function Checkout() {
     } catch (error) {
       if (error instanceof ApiError) {
         setFieldErrors(error.errors ?? {});
-        setFormError(error.errors ? "Confira os campos do endereço." : error.message);
+        setFormError(error.errors ? "Revise os campos do endereço." : error.message);
       }
     } finally {
       setSavingAddress(false);
@@ -94,7 +94,7 @@ export function Checkout() {
     } catch (error) {
       if (error instanceof ApiError) {
         setFieldErrors(error.errors ?? {});
-        setFormError(error.errors ? "Confira os campos do contato." : error.message);
+        setFormError(error.errors ? "Revise os campos do contato." : error.message);
       }
     } finally {
       setSavingContact(false);
@@ -142,7 +142,7 @@ export function Checkout() {
         if (cancelled) return;
         setCoupon(null);
         setServerTotals(null);
-        setCouponError(error instanceof ApiError ? (error.errors?.cupom?.[0] ?? error.message) : "Cupom não pôde ser aplicado.");
+        setCouponError(error instanceof ApiError ? (error.errors?.cupom?.[0] ?? error.message) : "Não foi possível aplicar o cupom.");
       });
     return () => {
       cancelled = true;
@@ -160,7 +160,7 @@ export function Checkout() {
       setCoupon(code);
       setCouponInput("");
     } catch (error) {
-      setCouponError(error instanceof ApiError ? (error.errors?.cupom?.[0] ?? error.message) : "Cupom não pôde ser aplicado.");
+      setCouponError(error instanceof ApiError ? (error.errors?.cupom?.[0] ?? error.message) : "Não foi possível aplicar o cupom.");
     } finally {
       setApplyingCoupon(false);
     }
@@ -181,7 +181,7 @@ export function Checkout() {
     if (!user) return;
     const form = new FormData(event.currentTarget);
     if (!useNewAddress && currentAddressId === null) {
-      setFormError("Escolha um endereço de entrega.");
+      setFormError("Selecione um endereço de entrega.");
       return;
     }
     if (!useNewContact && currentContactId === null) {
@@ -189,7 +189,7 @@ export function Checkout() {
       return;
     }
     if (!paymentCode) {
-      setFormError("Escolha uma forma de pagamento.");
+      setFormError("Selecione uma forma de pagamento.");
       return;
     }
     const base = {
@@ -218,10 +218,10 @@ export function Checkout() {
     } catch (error) {
       if (error instanceof ApiError) {
         const hasFieldErrors = Boolean(error.errors && Object.keys(error.errors).length);
-        setFormError(hasFieldErrors ? "Confira os campos destacados antes de confirmar." : error.message);
+        setFormError(hasFieldErrors ? "Revise os campos destacados para continuar." : error.message);
         setFieldErrors(error.errors ?? {});
       } else {
-        setFormError("Não foi possível confirmar o pedido.");
+        setFormError("Não foi possível confirmar o pedido. Tente novamente.");
       }
     } finally {
       setSubmitting(false);

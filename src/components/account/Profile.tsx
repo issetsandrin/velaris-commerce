@@ -6,10 +6,12 @@ import { useAuth } from "../auth/AuthContext";
 import { useAuthForm } from "../auth/useAuthForm";
 import { AddressCard, formatPostalCode } from "../address/AddressCard";
 import { AddressFields, readAddressForm } from "../address/AddressFields";
+import { ConfirmDialog } from "../ConfirmDialog";
 import { Icon } from "../Icon";
 import { Spinner } from "../Spinner";
 import { createAddress, createContact, deleteAddress, deleteContact, me, updateAddress, updateContact, type Address, type Contact } from "@/lib/api";
 import { ContactCard } from "../contact/ContactCard";
+import { TwoFactorCard } from "./TwoFactorCard";
 import { ContactFields, readContactForm } from "../contact/ContactFields";
 import styles from "./Profile.module.css";
 
@@ -23,6 +25,9 @@ export function Profile() {
   const [busyContactId, setBusyContactId] = useState<number | null>(null);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+  // Remover não tem volta: a pergunta guarda o alvo até a resposta.
+  const [removendoAddress, setRemovendoAddress] = useState<Address | null>(null);
+  const [removendoContact, setRemovendoContact] = useState<Contact | null>(null);
   const contactForm = useAuthForm();
 
   if (!user) return null;
@@ -93,6 +98,9 @@ export function Profile() {
     try {
       await deleteAddress(address.id);
       setUser(await me());
+      setRemovendoAddress(null);
+      // O formulário aberto pode ser o do endereço que acabou de sair.
+      if (editingAddress?.id === address.id) setEditingAddress(null);
     } finally {
       setBusyAddressId(null);
     }
@@ -141,6 +149,8 @@ export function Profile() {
     try {
       await deleteContact(contact.id);
       setUser(await me());
+      setRemovendoContact(null);
+      if (editingContact?.id === contact.id) setEditingContact(null);
     } finally {
       setBusyContactId(null);
     }
@@ -170,6 +180,8 @@ export function Profile() {
           </div>
         </dl>
       </section>
+
+      <TwoFactorCard />
 
       <section className={styles.card} aria-labelledby="contatos">
         <div className={styles.cardHead}>
@@ -212,7 +224,7 @@ export function Profile() {
                         Tornar padrão
                       </button>
                     )}
-                    <button type="button" onClick={() => void handleContactDelete(contact)} disabled={busyContactId === contact.id}>
+                    <button type="button" onClick={() => setRemovendoContact(contact)} disabled={busyContactId === contact.id}>
                       <Icon icon={Trash2} size={15} />
                       Remover
                     </button>
@@ -304,7 +316,7 @@ export function Profile() {
                         Tornar padrão
                       </button>
                     )}
-                    <button type="button" onClick={() => void handleDelete(address)} disabled={busyAddressId === address.id}>
+                    <button type="button" onClick={() => setRemovendoAddress(address)} disabled={busyAddressId === address.id}>
                       <Icon icon={Trash2} size={15} />
                       Remover
                     </button>
@@ -362,6 +374,36 @@ export function Profile() {
           </p>
         )}
       </section>
+
+      <ConfirmDialog
+        open={removendoContact !== null}
+        title="Remover este contato?"
+        busy={busyContactId === removendoContact?.id}
+        onCancel={() => setRemovendoContact(null)}
+        onConfirm={() => removendoContact && void handleContactDelete(removendoContact)}
+      >
+        <p>
+          <strong>{removendoContact?.name}</strong>
+          {removendoContact?.phone ? `, ${removendoContact.phone}` : ""}. Os pedidos já feitos com ele continuam como
+          estão; cadastrá-lo de novo depois é possível a qualquer momento.
+        </p>
+      </ConfirmDialog>
+
+      <ConfirmDialog
+        open={removendoAddress !== null}
+        title="Remover este endereço?"
+        busy={busyAddressId === removendoAddress?.id}
+        onCancel={() => setRemovendoAddress(null)}
+        onConfirm={() => removendoAddress && void handleDelete(removendoAddress)}
+      >
+        <p>
+          <strong>
+            {removendoAddress?.street}, {removendoAddress?.streetNumber}
+          </strong>
+          {removendoAddress?.city ? ` — ${removendoAddress.city}` : ""}. As entregas já a caminho não mudam de rumo;
+          cadastrá-lo de novo depois é possível a qualquer momento.
+        </p>
+      </ConfirmDialog>
     </>
   );
 }

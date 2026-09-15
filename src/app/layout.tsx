@@ -8,6 +8,7 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { NoticesProvider } from "@/components/notices/NoticesContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { VerifyEmailBanner } from "@/components/auth/VerifyEmailBanner";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import "./globals.css";
@@ -50,6 +51,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             <CartProvider>
               <NoticesProvider>
                 <Header />
+                <VerifyEmailBanner />
                 <PageTransition>{children}</PageTransition>
                 <Footer />
                 <CartDrawer />

@@ -6,6 +6,7 @@
 
 .panel {
   position: relative;
+  min-width: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -33,6 +34,8 @@
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
+  /* minmax(0,...) deixa a coluna encolher: só "1fr" para no min-content */
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   padding: 1.5rem var(--gutter) clamp(2.5rem, 6vw, 5rem);
 }
@@ -73,6 +76,7 @@
 .card {
   width: min(100%, 26rem);
   align-self: center;
+  justify-self: center;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -80,8 +84,11 @@
 
 @media (max-width: 900px) {
   .page {
-    grid-template-columns: 1fr;
-    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    /* Ocupa a tela e divide: painel em cima, formulário no resto. Sem isso o
+       conteúdo grudava no topo e sobrava um vazio grande embaixo. */
+    grid-template-rows: auto minmax(0, 1fr);
+    min-height: 100dvh;
   }
 
   .panel {
@@ -101,5 +108,14 @@
 
   .card {
     align-self: start;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .brand,
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
   }
 }

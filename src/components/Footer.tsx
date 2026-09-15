@@ -1,19 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useStoreConfig } from "./config/StoreConfigContext";
 import { formatPrice } from "@/lib/format";
+import { freteGratisDe } from "@/lib/frete";
+import { LOGO_PADRAO } from "@/lib/marca";
+import { eRotaDeConta } from "@/lib/rotas";
 import { Icon } from "./Icon";
 import { AtSign, Flame, Mail, RotateCcw, Truck } from "lucide-react";
 import styles from "./Footer.module.css";
 
 export function Footer() {
+  const pathname = usePathname();
   const { config } = useStoreConfig();
+  const freteGratis = freteGratisDe(config, 0);
+
+  if (eRotaDeConta(pathname)) return null;
+
   return (
     <footer className={styles.footer}>
       <div className={`container reveal-stagger ${styles.inner}`}>
         <div data-reveal>
-          <p className={styles.brand}>Velaris</p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={config.brand.logo ?? LOGO_PADRAO} alt="Velaris" className={styles.logo} />
           <p className={styles.note}>
             Velas de cera de coco, feitas à mão em pequenos lotes em Curitiba. Fragrâncias sem
             ftalatos, pavio de algodão, potes que você vai querer reaproveitar.
@@ -61,7 +71,9 @@ export function Footer() {
         <span>Velaris Velas Ltda.</span>
         <span className={styles.iconLink}>
           <Icon icon={Truck} size={15} />
-          Frete grátis a partir de {formatPrice(config.shipping.freeFrom)} para todo o Brasil.
+          {freteGratis.limite !== null
+            ? `Frete grátis a partir de ${formatPrice(freteGratis.limite)} para todo o Brasil.`
+            : "Enviamos para todo o Brasil."}
         </span>
       </div>
     </footer>

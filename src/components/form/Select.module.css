@@ -130,3 +130,10 @@
     animation: none;
   }
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .trigger,
+  .option {
+    min-height: 3rem;
+  }
+}

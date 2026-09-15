@@ -226,6 +226,75 @@
   left: 0.5rem;
 }
 
+/* ---------------------------------------------------------------------------
+   Celular: em uma coluna, a arte quadrada virava uma caixa da altura da tela
+   com a vela minúscula no meio. O card passa a ser uma linha: a vela à
+   esquerda, nome, preço e botão à direita.
+--------------------------------------------------------------------------- */
+@media (max-width: 560px) {
+  .card:not([data-layout="linha"]) {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: var(--wax);
+    border-radius: 6px;
+  }
+
+  .card:not([data-layout="linha"]) .art {
+    aspect-ratio: 1;
+    padding: 0.6rem;
+    background: var(--paper);
+  }
+
+  .card:not([data-layout="linha"]) .art:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card:not([data-layout="linha"]) .body {
+    gap: 0.6rem;
+  }
+
+  .card:not([data-layout="linha"]) .buy {
+    padding-top: 0.6rem;
+  }
+
+  /* O selo cobria a vela na miniatura: encolhe e vai para o pé da arte */
+  .card:not([data-layout="linha"]) .badge {
+    top: auto;
+    bottom: 0.25rem;
+    left: 0.25rem;
+    right: 0.25rem;
+    justify-content: center;
+    padding: 0.1rem 0.3rem;
+    font-size: 0.6rem;
+    letter-spacing: 0;
+  }
+
+  .card:not([data-layout="linha"]) .badge :global(.icon) {
+    display: none;
+  }
+}
+
+/* Celular estreito: em vez de espremer preço e botão na mesma linha,
+   o botão desce e ocupa a largura toda, que é mais fácil de acertar com o dedo. */
+@media (max-width: 420px) {
+  .buy {
+    flex-wrap: wrap;
+  }
+
+  .buy .btn,
+  .buy .qty {
+    width: 100%;
+  }
+
+  .qty {
+    justify-content: space-between;
+  }
+}
+
 @media (max-width: 640px) {
   .card[data-layout="linha"] .body {
     flex-direction: column;
@@ -236,5 +305,21 @@
   .card[data-layout="linha"] .buy {
     width: 100%;
     justify-content: space-between;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .name a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+  }
+
+  .add {
+    min-height: 3rem;
+  }
+
+  .qty button {
+    height: 3rem;
   }
 }

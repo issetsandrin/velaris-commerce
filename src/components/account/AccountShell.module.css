@@ -111,7 +111,7 @@
 
 @media (max-width: 900px) {
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .side {
@@ -125,5 +125,29 @@
 
   .navLink {
     width: auto;
+  }
+}
+
+/* Celular: em vez de "Sair" cair sozinho numa segunda linha, o menu vira uma
+   faixa que corre de lado, como as abas dos aplicativos. */
+@media (max-width: 640px) {
+  .nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.25rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+  }
+
+  .navLink {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .navLink {
+    min-height: 3rem;
   }
 }

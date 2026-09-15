@@ -165,3 +165,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .crumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+  }
+
+  .related a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+  }
+}

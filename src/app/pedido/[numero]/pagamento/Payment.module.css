@@ -334,3 +334,16 @@
     position: static;
   }
 }
+
+@media (hover: none) and (pointer: coarse) {
+  /* Os números de teste e o "pagar depois" também precisam caber no dedo */
+  .testCards li button {
+    min-height: 3rem;
+  }
+
+  .later {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+  }
+}

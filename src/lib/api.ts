@@ -104,7 +104,22 @@ export interface ShippingMethodConfig {
   freeFrom: number | null;
 }
 
+export interface HomeBanner {
+  id: number;
+  image: string;
+  title: string | null;
+  text: string | null;
+  buttonLabel: string | null;
+  buttonLink: string | null;
+  /** Onde o texto assenta sobre a imagem. */
+  align: "esquerda" | "centro" | "direita";
+}
+
 export interface StoreConfig {
+  /** Logotipo enviada pelo painel; nulo usa o arquivo que vem na loja. */
+  brand: { logo: string | null };
+  /** Topo da home: a vela animada ou os banners cadastrados no painel. */
+  home: { heroStyle: "vela" | "banner"; heroInterval: number; banners: HomeBanner[] };
   /** Limite padrão da loja, usado nos textos de vitrine e pelas entregas sem limite próprio. */
   shipping: { freeFrom: number };
   shippingMethods: ShippingMethodConfig[];
@@ -115,6 +130,8 @@ export interface StoreConfig {
 
 /** Valores usados só até a configuração da loja chegar da API. */
 export const DEFAULT_STORE_CONFIG: StoreConfig = {
+  brand: { logo: null },
+  home: { heroStyle: "vela", heroInterval: 6, banners: [] },
   shipping: { freeFrom: 180 },
   shippingMethods: [],
   maxQuantityPerItem: 10,
@@ -340,6 +357,9 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  emailVerified: boolean;
+  /** Verificação em dois passos ligada pelo próprio cliente. */
+  twoFactor: boolean;
   addresses: Address[];
   contacts: Contact[];
 }
@@ -347,6 +367,41 @@ export interface User {
 export interface AuthResponse {
   token: string;
   user: User;
+}
+
+/** Primeiro passo do login: a senha bateu e o código saiu por e-mail. */
+export interface TwoFactorChallenge {
+  twoFactor: true;
+  /** Identificador da tentativa em curso, devolvido junto do código. */
+  desafio: string;
+  /** E-mail mascarado, para a pessoa conferir para onde foi o código. */
+  email: string;
+  expiraEm: string;
+}
+
+export type LoginResult = AuthResponse | TwoFactorChallenge;
+
+export function isTwoFactor(result: LoginResult): result is TwoFactorChallenge {
+  return "twoFactor" in result;
+}
+
+export interface CodePayload {
+  desafio: string;
+  codigo: string;
+}
+
+export interface ResetPasswordPayload {
+  token: string;
+  email: string;
+  senha: string;
+  senha_confirmation: string;
+}
+
+/** O cadastro não abre sessão: fica esperando o link de confirmação. */
+export interface RegisterResult {
+  confirmacaoPendente: true;
+  email: string;
+  message: string;
 }
 
 export interface RegisterPayload {
@@ -359,6 +414,8 @@ export interface RegisterPayload {
 export interface LoginPayload {
   email: string;
   senha: string;
+  /** "Manter minha conta ativa por 30 dias": estende o prazo do token. */
+  lembrar?: boolean;
 }
 
 export interface AddressPayload {
@@ -372,12 +429,56 @@ export interface AddressPayload {
   padrao?: boolean;
 }
 
-export function register(payload: RegisterPayload, cartToken: string | null): Promise<AuthResponse> {
-  return request<AuthResponse>("/auth/registrar", { method: "POST", body: JSON.stringify(payload) }, cartToken);
+export function register(payload: RegisterPayload, cartToken: string | null): Promise<RegisterResult> {
+  return request<RegisterResult>("/auth/registrar", { method: "POST", body: JSON.stringify(payload) }, cartToken);
 }
 
-export function login(payload: LoginPayload, cartToken: string | null): Promise<AuthResponse> {
-  return request<AuthResponse>("/auth/entrar", { method: "POST", body: JSON.stringify(payload) }, cartToken);
+/** Reenvia o link de confirmação para quem ainda não consegue entrar. */
+export function resendConfirmationLink(email: string): Promise<{ message: string }> {
+  return request<{ message: string }>("/auth/email/reenviar-link", { method: "POST", body: JSON.stringify({ email }) });
+}
+
+export function login(payload: LoginPayload, cartToken: string | null): Promise<LoginResult> {
+  return request<LoginResult>("/auth/entrar", { method: "POST", body: JSON.stringify(payload) }, cartToken);
+}
+
+/** Segundo passo do login: troca o código do e-mail pelo token da sessão. */
+export function loginWithCode(payload: CodePayload, cartToken: string | null): Promise<AuthResponse> {
+  return request<AuthResponse>("/auth/entrar/codigo", { method: "POST", body: JSON.stringify(payload) }, cartToken);
+}
+
+export function resendLoginCode(desafio: string): Promise<TwoFactorChallenge> {
+  return request<TwoFactorChallenge>("/auth/entrar/codigo/reenviar", { method: "POST", body: JSON.stringify({ desafio }) });
+}
+
+export interface ConfirmEmailResult {
+  message: string;
+  /** O link já tinha sido usado: a conta segue confirmada, não é erro. */
+  jaEstava: boolean;
+  user: User;
+}
+
+export function confirmEmail(token: string): Promise<ConfirmEmailResult> {
+  return request<ConfirmEmailResult>("/auth/email/confirmar", { method: "POST", body: JSON.stringify({ token }) });
+}
+
+export function resendEmailConfirmation(): Promise<{ message: string }> {
+  return request<{ message: string }>("/auth/email/reenviar", { method: "POST", body: "{}" });
+}
+
+export function setTwoFactor(ativo: boolean): Promise<{ message: string; user: User }> {
+  return request<{ message: string; user: User }>("/conta/dois-passos", {
+    method: "POST",
+    body: JSON.stringify({ ativo }),
+  });
+}
+
+export function forgotPassword(email: string): Promise<{ message: string }> {
+  return request<{ message: string }>("/auth/senha/esqueci", { method: "POST", body: JSON.stringify({ email }) });
+}
+
+export function resetPassword(payload: ResetPasswordPayload): Promise<{ message: string }> {
+  return request<{ message: string }>("/auth/senha/redefinir", { method: "POST", body: JSON.stringify(payload) });
 }
 
 export function loginWithGoogle(credential: string, cartToken: string | null): Promise<AuthResponse> {

@@ -156,3 +156,10 @@ label.card:hover {
 .card[data-account] .actions {
   margin-top: auto;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .actions button {
+    min-height: 3rem;
+    padding-right: 0.5rem;
+  }
+}

@@ -10,12 +10,10 @@
   gap: 3rem;
 }
 
-.brand {
-  font-family: var(--font-display);
-  font-size: 1.9rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
+/* Logotipo do rodapé: a altura manda, a largura acompanha o arquivo */
+.logo {
+  height: 4.5rem;
+  width: auto;
 }
 
 .note {
@@ -91,4 +89,13 @@
   font-style: normal;
   font-size: 0.95rem;
   line-height: 1.4;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .cols a,
+  .iconLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+  }
 }

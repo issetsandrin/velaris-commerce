@@ -1,3 +1,8 @@
+/* A troca de página rola até aqui; a margem evita a barra fixa do topo. */
+.wrap {
+  scroll-margin-top: var(--header-total);
+}
+
 .list {
   list-style: none;
   margin: 0;

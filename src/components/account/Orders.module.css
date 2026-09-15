@@ -1,6 +1,8 @@
 /* Um invólucro só: o AccountShell separa os filhos dele em 2rem, e aqui dentro
    o espaçamento é mais curto. */
 .wrap {
+  /* A troca de página rola até aqui; a margem evita a barra fixa do topo. */
+  scroll-margin-top: var(--header-total);
   display: flex;
   flex-direction: column;
 }
@@ -341,5 +343,21 @@
 @media (max-width: 720px) {
   .foot {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .control input,
+  .control {
+    min-height: 3rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .detail,
+  .pay {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
   }
 }

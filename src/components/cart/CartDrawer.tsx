@@ -8,6 +8,7 @@ import { Icon } from "../Icon";
 import { Info, ShoppingBag, Trash2, Truck, X } from "lucide-react";
 import { useStoreConfig } from "../config/StoreConfigContext";
 import { formatPrice } from "@/lib/format";
+import { freteGratisDe } from "@/lib/frete";
 import styles from "./CartDrawer.module.css";
 
 export function CartDrawer() {
@@ -15,7 +16,7 @@ export function CartDrawer() {
   const { user } = useAuth();
   const checkoutHref = user ? "/checkout" : "/entrar?next=%2Fcheckout";
   const { config } = useStoreConfig();
-  const missing = Math.max(0, config.shipping.freeFrom - subtotal);
+  const freteGratis = freteGratisDe(config, subtotal);
   const tab = isOpen ? 0 : -1;
 
   return (
@@ -54,7 +55,7 @@ export function CartDrawer() {
         ) : items.length === 0 ? (
           <div className={styles.empty}>
             <Icon icon={ShoppingBag} size={32} />
-            <p>Nada por aqui ainda.</p>
+            <p>Seu carrinho está vazio.</p>
             <Link href="/colecao" onClick={close} className="link-underline" tabIndex={tab}>
               Ver a coleção
             </Link>
@@ -100,10 +101,16 @@ export function CartDrawer() {
             </ul>
 
             <footer className={styles.foot}>
-              <p className={styles.shipping}>
-                <Icon icon={Truck} size={16} />
-                {missing > 0 ? `Faltam ${formatPrice(missing)} para o frete grátis.` : "Frete grátis liberado."}
-              </p>
+              {freteGratis.limite !== null && (
+                <p className={styles.shipping}>
+                  <Icon icon={Truck} size={16} />
+                  {freteGratis.disponivel
+                    ? freteGratis.emTodas
+                      ? "Frete grátis nesta compra."
+                      : `Frete grátis na ${freteGratis.entrega}.`
+                    : `Faltam ${formatPrice(freteGratis.falta)} para o frete grátis.`}
+                </p>
+              )}
               <div className={styles.subtotal}>
                 <span>Subtotal</span>
                 <span key={subtotal} className={`price ${styles.subtotalValue}`}>
